@@ -125,14 +125,21 @@ int main()
 	}
 	
 	int n=0;
+	double l=0;
+	double nu=0;
+	cout<<"Enter number of operators:"<<endl;
 	cin>>n;
-	people_que a(5,time(0)*1000);
+	cout<<"Enter people intensivity (Lambda):"<<endl;
+	cin>>l;
+	cout<<"Enter operator speed (Nu):"<<endl;
+	cin>>nu;
+	people_que a(l,time(0)*1000);
 	event_struct **agents= new event_struct*[n+1];
 	agents[0]=&a;
 	int i=0;
 	while (i<n)
 	{
-		agents[i+1]=new bank_operator(1,time(0)*1000,&a);
+		agents[i+1]=new bank_operator(nu,time(0)*1000,&a);
 		i++;
 		
 	}
@@ -170,14 +177,14 @@ int main()
 		probs[min(am,16)]++;
 		exps++;
 		cout<<"Currently "<<am<<" people in system"<<endl;
-		cout<<"Theoretical probability is "<<prob(am,n,5,1)<<endl;
+		cout<<"Theoretical probability is "<<prob(am,n,l,nu)<<endl;
 		cout<<"Experemental probability is"<<probs[am]*1.0/exps;
 		cout<<endl<<"First 6 probabilities"<<endl;
 		cout<<"Theoretical:  ";
 		y=0;
 		while (y<6)
 		{
-			cout<<prob(y,n,5,1)<<" ";
+			cout<<prob(y,n,l,nu)<<" ";
 			y++;
 		}
 		cout<<endl<<"Experimental: ";
