@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <cmath>
+#include <chrono>
 
 using namespace std;
 
@@ -8,6 +9,12 @@ double rand_expon(double lambda)
 {
 	double uniform=rand()*1.0/RAND_MAX;
 	return -1000*log(uniform)/lambda;
+}
+
+double getTime()
+{
+	unsigned __int64 now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    return now;
 }
 
 int fact(int n)
@@ -133,13 +140,13 @@ int main()
 	cin>>l;
 	cout<<"Enter operator speed (Nu):"<<endl;
 	cin>>nu;
-	people_que a(l,time(0)*1000);
+	people_que a(l,getTime());
 	event_struct **agents= new event_struct*[n+1];
 	agents[0]=&a;
 	int i=0;
 	while (i<n)
 	{
-		agents[i+1]=new bank_operator(nu,time(0)*1000,&a);
+		agents[i+1]=new bank_operator(nu,getTime(),&a);
 		i++;
 		
 	}
@@ -151,7 +158,7 @@ int main()
 		int am=0;
 		while (t<n+1)
 		{
-			if (agents[t]->next_event_time<time(0)*1000)
+			if (agents[t]->next_event_time<getTime())
 			{
 				agents[t]->perform_event();
 			}
@@ -177,8 +184,8 @@ int main()
 		probs[min(am,16)]++;
 		exps++;
 		cout<<"Currently "<<am<<" people in system"<<endl;
-		cout<<"Theoretical probability is "<<prob(am,n,l,nu)<<endl;
-		cout<<"Experemental probability is"<<probs[am]*1.0/exps;
+		cout<<"Theoretical probability is  "<<prob(am,n,l,nu)<<endl;
+		cout<<"Experemental probability is "<<probs[am]*1.0/exps;
 		cout<<endl<<"First 6 probabilities"<<endl;
 		cout<<"Theoretical:  ";
 		y=0;
